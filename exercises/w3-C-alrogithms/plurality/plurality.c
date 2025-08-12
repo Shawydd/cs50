@@ -65,29 +65,30 @@ int main(int argc, string argv[])
 // Update vote totals given a new vote
 bool vote(string name)
 {
-    for (unsigned short int i = 0; i < candidate_count; i++)
+    for (int i = 0; i < candidate_count; i++)
         if (strcmp(name, candidates[i].name) == 0)
         {
             // If the strings are the same the candidate votes value are updated
             candidates[i].votes++;
             return true;
         }
-        
+
     return false;
 }
 
 // Print the winner (or winners) of the election
 void print_winner(void)
 {
-    unsigned short int winner = candidates[0].votes;
+    int winner = candidates[0].votes;
 
-    for (unsigned short int i = 1; i < candidate_count; i++)
+    for (int i = 1; i < candidate_count; i++)
         // Check for the candidate with highest votes value and then save it in our variable
         if (candidates[i].votes > winner)
             winner = candidates[i].votes;
 
-    for (unsigned short int i = 0; i < candidate_count; i++)
+    for (int i = 0; i < candidate_count; i++)
         // Check if the candidate has the same vote in winner variable and then print it
         if (candidates[i].votes == winner)
             printf("%s\n", candidates[i].name);
 }
+// --------------------------------------------------------------------------------------------------------------------------------------

@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <string.h> // strcmp for string comparison
 
+typedef uint8_t BYTE;
+
 // Runs the Luhn algorithm on the card number to check for validity
 bool luhn_algorithm(long int card_number);
 
@@ -10,7 +12,7 @@ bool luhn_algorithm(long int card_number);
 char *first_step_validation(long int card_number);
 
 // Computes integer powers of 10 without using math.h (avoids floating point calculations)
-long int power_of_10(unsigned short int exp);
+long int power_of_10(const BYTE exp);
 
 // Prompts the user until a valid (non-negative) long integer is entered
 long int user_input_validation(void);
@@ -38,7 +40,7 @@ int main(void)
 
 bool luhn_algorithm(long int card_number)
 {
-    unsigned short int luhn_sum = 0;
+    long int luhn_sum = 0;
     long int modified_card_number;
 
     // Process digits two at a time: units place (added as-is), then tens place (possibly doubled)
@@ -61,13 +63,13 @@ bool luhn_algorithm(long int card_number)
 char *first_step_validation(long int card_number)
 {
     // First two digits for identifying American Express cards
-    const uint8_t AMEX[] = {34, 37};
+    const BYTE AMEX[] = {34, 37};
     // First two digits for identifying MasterCard cards
-    const uint8_t MASTERCARD[] = {51, 52, 53, 54, 55};
+    const BYTE MASTERCARD[] = {51, 52, 53, 54, 55};
     // First digit for identifying Visa cards
-    const uint8_t VISA = 4;
+    const BYTE VISA = 4;
 
-    unsigned short int card_number_length = 0;
+    BYTE card_number_length = 0;
     long int temp_card_number = card_number;
 
     // Count how many digits are in the card number
@@ -78,29 +80,28 @@ char *first_step_validation(long int card_number)
     }
 
     // Only proceed if the length matches known valid card formats (Visa, Amex, Mastercard)
-    uint8_t min_visa_length = 13, amex_length = 15, max_mastercard_visa_length = 16;
+    BYTE min_visa_length = 13, amex_length = 15, max_mastercard_visa_length = 16;
     if (card_number_length == min_visa_length || card_number_length == amex_length ||
         card_number_length == max_mastercard_visa_length)
     {
         // Check if it's a Visa by comparing the first digit and length
-        if ((card_number / (long int) power_of_10(card_number_length - 1)) == VISA &&
+        if ((card_number / power_of_10(card_number_length - 1)) == VISA &&
             (card_number_length == min_visa_length ||
              card_number_length == max_mastercard_visa_length))
             return "VISA";
 
         // Extract the first two digits for Amex and Mastercard validation
-        uint8_t card_first_two_digits =
-            card_number / (long int) power_of_10(card_number_length - 2);
+        BYTE card_first_two_digits = (BYTE) (card_number / power_of_10(card_number_length - 2));
 
         // Check if the number matches any known Amex prefix with correct length
-        uint8_t amex_array_length = sizeof(AMEX) / sizeof(AMEX[0]);
-        for (uint8_t i = 0; i < amex_array_length; i++)
+        BYTE amex_array_length = (BYTE) (sizeof(AMEX) / sizeof(AMEX[0]));
+        for (BYTE i = 0; i < amex_array_length; i++)
             if (card_first_two_digits == AMEX[i] && card_number_length == amex_length)
                 return "AMEX";
 
         // Check if the number matches any known Mastercard prefix with correct length
-        uint8_t mastercard_array_length = sizeof(MASTERCARD) / sizeof(MASTERCARD[0]);
-        for (uint8_t i = 0; i < mastercard_array_length; i++)
+        BYTE mastercard_array_length = (BYTE) (sizeof(MASTERCARD) / sizeof(MASTERCARD[0]));
+        for (BYTE i = 0; i < mastercard_array_length; i++)
             if (card_first_two_digits == MASTERCARD[i] &&
                 card_number_length == max_mastercard_visa_length)
                 return "MASTERCARD";
@@ -109,11 +110,11 @@ char *first_step_validation(long int card_number)
     return INVALID;
 }
 
-long int power_of_10(unsigned short int exp)
+long int power_of_10(const BYTE exp)
 {
     long int result = 1;
     // Iteratively multiply result by 10 to get 10^exp
-    for (int i = 0; i < exp; i++)
+    for (BYTE i = 0; i < exp; i++)
         result *= 10;
 
     return result;

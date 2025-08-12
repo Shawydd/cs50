@@ -33,7 +33,7 @@ void sort_pairs(void);
 void lock_pairs(void);
 bool recursive_lock_check(int winner, int loser);
 void print_winner(void);
-bool winner_flag(unsigned short int index);
+bool winner_flag(int index);
 
 int main(int argc, string argv[])
 {
@@ -102,7 +102,7 @@ int main(int argc, string argv[])
 bool vote(int rank, string name, int ranks[])
 {
     // Search candidates for name match and record their index in preferences
-    for (unsigned short int i = 0; i < candidate_count; i++)
+    for (int i = 0; i < candidate_count; i++)
         if (strcmp(name, candidates[i]) == 0)
         {
             ranks[rank] = i;
@@ -117,8 +117,8 @@ void record_preferences(int ranks[])
 {
     /* For each candidate preferred over another,
     increment the count of voters who prefer ranks[i] over ranks[j] */
-    for (unsigned short int i = 0; i < candidate_count; i++)
-        for (unsigned short int j = i + 1; j < candidate_count; j++)
+    for (int i = 0; i < candidate_count; i++)
+        for (int j = i + 1; j < candidate_count; j++)
             preferences[ranks[i]][ranks[j]]++;
 
     return;
@@ -128,8 +128,8 @@ void record_preferences(int ranks[])
 void add_pairs(void)
 {
     // Compare every pair of candidates
-    for (unsigned short int i = 0; i < candidate_count; i++)
-        for (unsigned short int j = i + 1; j < candidate_count; j++)
+    for (int i = 0; i < candidate_count; i++)
+        for (int j = i + 1; j < candidate_count; j++)
             // Only add pairs where there is a clear preference
             if (preferences[i][j] != preferences[j][i])
             {
@@ -158,13 +158,13 @@ void sort_pairs(void)
     while (flag)
     {
         flag = false;
-        for (unsigned short int i = 0; i < pair_count - 1; i++)
+        for (int i = 0; i < pair_count - 1; i++)
         {
             // Swap pairs if the next pair has a stronger victory margin
             if (preferences[pairs[i].winner][pairs[i].loser] <
                 preferences[pairs[i + 1].winner][pairs[i + 1].loser])
             {
-                unsigned short int winner_change[] = {pairs[i + 1].winner, pairs[i + 1].loser};
+                int winner_change[] = {pairs[i + 1].winner, pairs[i + 1].loser};
                 pairs[i + 1].winner = pairs[i].winner, pairs[i + 1].loser = pairs[i].loser;
 
                 pairs[i].winner = winner_change[0], pairs[i].loser = winner_change[1];
@@ -180,7 +180,7 @@ void sort_pairs(void)
 void lock_pairs(void)
 {
     // For each pair in sorted order, lock it unless it creates a cycle
-    for (unsigned short int i = 0; i < pair_count; i++)
+    for (int i = 0; i < pair_count; i++)
         if (!recursive_lock_check(pairs[i].winner, pairs[i].loser))
             locked[pairs[i].winner][pairs[i].loser] = true;
 
@@ -202,7 +202,7 @@ bool recursive_lock_check(int winner, int loser)
 void print_winner(void)
 {
     // The winner is the candidate with no edges pointing to them
-    for (unsigned short int i = 0; i < candidate_count; i++)
+    for (int i = 0; i < candidate_count; i++)
         if (winner_flag(i))
         {
             printf("%s\n", candidates[i]);
@@ -211,10 +211,10 @@ void print_winner(void)
 }
 
 // Helper function to determine if candidate is source of the graph
-bool winner_flag(unsigned short int index)
+bool winner_flag(int index)
 {
     // Candidate is winner only if no candidate is locked over them
-    for (unsigned short int i = 0; i < candidate_count; i++)
+    for (int i = 0; i < candidate_count; i++)
         if (locked[i][index])
             return false;
 

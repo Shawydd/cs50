@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 
 bool argv_conditions(const char *argv)
 {
-    const unsigned short int alphabet_length = 26;
+    const unsigned int alphabet_length = 26;
     const unsigned int argv_len = strlen(argv);
 
     if (argv_len == alphabet_length)
@@ -38,13 +38,14 @@ bool argv_conditions(const char *argv)
         // Check all characters are alphabetic
         for (unsigned int i = 0; i < argv_len; i++)
         {
-            char temp = toupper((unsigned char) argv[i]);
+            unsigned char temp = toupper((unsigned char) argv[i]);
+            
             if (temp < 'A' || temp > 'Z')
                 return true; // Non-alphabetic character found
 
             // Check for duplicate letters (case-insensitive)
             for (unsigned int j = i + 1; j < argv_len - 1; j++)
-                if (toupper((unsigned char) argv[i]) == toupper((unsigned char) argv[j]))
+                if (temp == toupper((unsigned char) argv[j]))
                     return true; // Duplicate character found
         }
         return false; // Valid key

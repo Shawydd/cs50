@@ -53,7 +53,7 @@ void caesar_cipher(const unsigned int key)
         if (isalpha((unsigned char) text[i]))
         {
             // Set base to 'A' or 'a' depending on upper or lower case
-            char base = isupper((unsigned char) text[i]) ? 'A' : 'a';
+            unsigned char base = isupper((unsigned char) text[i]) ? 'A' : 'a';
             text[i] = (text[i] - base + key) % 26 + base;
         }
 

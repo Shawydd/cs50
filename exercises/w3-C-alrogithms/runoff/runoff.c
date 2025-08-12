@@ -27,7 +27,7 @@ int candidate_count;
 // Function prototypes
 bool vote(int voter, int rank, string name);
 void tabulate(void);
-void candidate_found(unsigned short int voter);
+void candidate_found(int voter);
 bool print_winner(void);
 int find_min(void);
 bool is_tie(int min);
@@ -129,7 +129,7 @@ int main(int argc, string argv[])
 bool vote(int voter, int rank, string name)
 {
     // Search candidates for name match and record their index in preferences
-    for (unsigned short int i = 0; i < candidate_count; i++)
+    for (int i = 0; i < candidate_count; i++)
     {
         if (strcmp(name, candidates[i].name) == 0)
         {
@@ -144,16 +144,16 @@ bool vote(int voter, int rank, string name)
 void tabulate(void)
 {
     // For each voter, find their top choice candidate still in the race and increment vote
-    for (unsigned short int i = 0; i < voter_count; i++)
+    for (int i = 0; i < voter_count; i++)
         candidate_found(i);
 
     return;
 }
 
 // Finds the first preferred candidate for a voter who is not eliminated and adds a vote
-void candidate_found(unsigned short int voter)
+void candidate_found(int voter)
 {
-    for (unsigned short int j = 0; j < candidate_count; j++)
+    for (int j = 0; j < candidate_count; j++)
         if (!candidates[preferences[voter][j]].eliminated)
         {
             candidates[preferences[voter][j]].votes++;
@@ -165,7 +165,7 @@ void candidate_found(unsigned short int voter)
 bool print_winner(void)
 {
     // Check if any candidate has more than 50% of the total votes
-    for (unsigned short int i = 0; i < candidate_count; i++)
+    for (int i = 0; i < candidate_count; i++)
         if (!candidates[i].eliminated && (candidates[i].votes / (float) voter_count) > 0.5)
         {
             printf("%s\n", candidates[i].name);
@@ -179,9 +179,9 @@ bool print_winner(void)
 int find_min(void)
 {
     // Initialize min with maximum possible votes then find the actual minimum
-    unsigned short int min = voter_count;
+    int min = voter_count;
 
-    for (unsigned short int i = 0; i < candidate_count; i++)
+    for (int i = 0; i < candidate_count; i++)
         if (!candidates[i].eliminated && candidates[i].votes < min)
             min = candidates[i].votes;
 
@@ -192,7 +192,7 @@ int find_min(void)
 bool is_tie(int min)
 {
     // Check if all remaining candidates have the same vote count (equal to min)
-    for (unsigned short int i = 0; i < candidate_count; i++)
+    for (int i = 0; i < candidate_count; i++)
         if (min < candidates[i].votes && !candidates[i].eliminated)
             return false;
 
@@ -203,7 +203,7 @@ bool is_tie(int min)
 void eliminate(int min)
 {
     // Mark all candidates with minimum votes as eliminated
-    for (unsigned short int i = 0; i < candidate_count; i++)
+    for (int i = 0; i < candidate_count; i++)
         if (!candidates[i].eliminated && candidates[i].votes == min)
             candidates[i].eliminated = true;
 

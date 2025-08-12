@@ -35,7 +35,7 @@ needed to make the given amount of change (in cents) and prints the total */
 void coins_given(int money_to_change)
 {
     // Coin denominations in cents
-    const unsigned short penny = 1, nickel = 5, dime = 10, quarter = 25;
+    const int penny = 1, nickel = 5, dime = 10, quarter = 25;
 
     int coin_count = 0;
 
@@ -53,5 +53,5 @@ void coins_given(int money_to_change)
         coin_count++;
     }
     // Print the total number of coins used
-    printf("%d\n", coin_count);
+    printf("%i\n", coin_count);
 }
