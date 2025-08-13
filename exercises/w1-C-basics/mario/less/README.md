@@ -24,4 +24,4 @@ Re-prompt the user, again and again as needed, if their input is not greater tha
 ---
 Based on: [mario (less comfortable) - CS50 Walkthroughs 2019](https://www.youtube.com/watch?v=NAs4FIWkJ4s "https://www.youtube.com/watch?v=NAs4FIWkJ4s")
 
-Note this walkthrough specifies your program should prompt the user for a pyramid’s height and re-prompt if the user inputs a value less than 1 or greater than 8. The specification only requires you to re-prompt the user if they input a value less than 1.
+__Note__: this walkthrough specifies your program should prompt the user for a pyramid’s height and re-prompt if the user inputs a value less than 1 or greater than 8. The specification only requires you to re-prompt the user if they input a value less than 1.
