@@ -1,0 +1,2 @@
+ARGUMENT_TO_CHECK = 3
+
